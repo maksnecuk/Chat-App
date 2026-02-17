@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatApp - Rooms</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <main id="mainBackground">
+      <section class="card">
+        <h2>Dein Profil</h2>
+        <form id="createUserNicknameForm">
+          <div class="input-group">
+            <label for="userNickname">Nickname:</label>
+            <input
+              type="text"
+              id="userNickname"
+              placeholder="Gib deinen Namen ein..."
+              required
+            />
+          </div>
+          <button type="submit" class="button">Speichern</button>
+        </form>
+        <script type="module" src="src/enterRoom.ts"></script>
+      </section>
+
+      <section class="card list-section">
+        <h1>Raum wählen</h1>
+        <p class="subtitle">Verfügbare Räume:</p>
+
+        <div class="table-container">
+          <table id="roomsTable">
+            <thead>
+              <tr>
+                <th>Raumname</th>
+                <th>Thema</th>
+                <th>Users</th>
+              </tr>
+            </thead>
+            <tbody id="listRooms"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="src/renderRooms.ts"></script>
+  </body>
+</html>

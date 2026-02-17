@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Room - ChatApp</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <main id="mainBackground">
+      <section class="card">
+        <h1>Raum erstellen</h1>
+        <p class="subtitle">Erstelle einen neuen Ort zum Chatten</p>
+
+        <form id="createRoomForm">
+          <div class="input-group">
+            <label for="roomTitle">Name des Raums:</label>
+            <input
+              type="text"
+              id="roomTitle"
+              name="title"
+              placeholder="z.b OnlyGeeks"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="roomTopic">Thema:</label>
+            <input
+              type="text"
+              id="roomTopic"
+              name="topic"
+              placeholder="Z.B Was wollen wir trinken?"
+            />
+          </div>
+
+          <button type="submit" class="button">Erstellen</button>
+          <a href="/" class="link-back">Zurück zur Hauptseite</a>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="./src/createRoom.ts"></script>
+  </body>
+</html>
