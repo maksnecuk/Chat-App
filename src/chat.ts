@@ -5,6 +5,8 @@ const chatContainer = document.getElementById("chatContainer");
 
 const messageForm = document.getElementById("messageForm") as HTMLFormElement;
 const messageInput = document.getElementById("message") as HTMLInputElement;
+const imageButton = document.getElementById("imageButton") as HTMLButtonElement;
+const imageInput = document.getElementById("imageInput") as HTMLInputElement;
 
 if (!nickName || !roomId) {
   window.location.href = "./enterRoom.html";
@@ -24,20 +26,20 @@ interface messageObjectOfServer {
   };
 }
 webSocket.onmessage = (event) => {
-  const newMessege: messageObjectOfServer = JSON.parse(event.data);
+  const newMessage: messageObjectOfServer = JSON.parse(event.data);
 
-  switch (newMessege.type) {
+  switch (newMessage.type) {
     case "message":
       const mainContainer = document.createElement("div");
       const nicknameElement = document.createElement("div");
       const messageElement = document.createElement("div");
       const timeElement = document.createElement("div");
 
-      nicknameElement.textContent = newMessege.user.name;
-      messageElement.textContent = newMessege.message;
-      timeElement.textContent = newMessege.timestamp.slice(11, 16);
+      nicknameElement.textContent = newMessage.user.name;
+      messageElement.textContent = newMessage.message;
+      timeElement.textContent = newMessage.timestamp.slice(11, 16);
 
-      if (newMessege.user.name === nickName) {
+      if (newMessage.user.name === nickName) {
         mainContainer.classList.add("myMessage");
       } else {
         mainContainer.classList.add("otherMessage");
@@ -55,23 +57,38 @@ webSocket.onmessage = (event) => {
       }
 
       break;
-    /*   KOMMT IRGENDWANN SPATER
-    case "image":
-      //logic for image
-      const mainContainerForImage = document.createElement("div");
-      const nicknameByImageElement = document.createElement("div"); 
-      const imageContainer = document.createElement("div");
-      const timeByImageElement = document.createElement("div");      
-      
-      nicknameByImageElement.textContent= newMessege.user.name
-      imageContainer.te = newMessege.message
 
-      break;*/
+    case "image":
+      const mainContainerForImage = document.createElement("div");
+      const nicknameByImageElement = document.createElement("div");
+      const imageContainer = document.createElement("img");
+      const timeByImageElement = document.createElement("div");
+
+      nicknameByImageElement.textContent = newMessage.user.name;
+      timeByImageElement.textContent = newMessage.timestamp.slice(11, 16);
+      if (nickName === newMessage.user.name) {
+        mainContainerForImage.classList.add("myMessage");
+      } else {
+        mainContainerForImage.classList.add("otherMessage");
+      }
+      nicknameByImageElement.classList.add("message-author");
+      timeByImageElement.classList.add("message-time");
+      imageContainer.classList.add("message-body");
+      imageContainer.src = newMessage.message;
+
+      mainContainerForImage.appendChild(nicknameByImageElement);
+      mainContainerForImage.appendChild(imageContainer);
+      mainContainerForImage.appendChild(timeByImageElement);
+      if (chatContainer) {
+        chatContainer.appendChild(mainContainerForImage);
+      }
+
+      break;
     case "system":
       const mainContainerForSystem = document.createElement("div");
       const systemMessageElement = document.createElement("div");
 
-      systemMessageElement.textContent = newMessege.message;
+      systemMessageElement.textContent = newMessage.message;
       mainContainerForSystem.appendChild(systemMessageElement);
       mainContainerForSystem.classList.add("sysMessage");
 
@@ -82,6 +99,32 @@ webSocket.onmessage = (event) => {
       break;
   }
 };
+imageButton.addEventListener("click", (event: MouseEvent) => {
+  imageInput.click();
+});
+
+imageInput.addEventListener("change", () => {
+  if (imageInput.files && imageInput.files.length > 0) {
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64String = reader.result as string;
+
+      if (webSocket.readyState === WebSocket.OPEN) {
+        webSocket.send(
+          JSON.stringify({
+            type: "image",
+            message: base64String,
+          }),
+        );
+        imageInput.value = "";
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
 
 messageForm.addEventListener("submit", (event: SubmitEvent) => {
   event.preventDefault();

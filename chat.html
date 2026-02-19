@@ -31,13 +31,52 @@
           <div class="input-group" style="margin-bottom: 0">
             <label for="message" style="display: none">Deine Nachricht:</label>
             <div style="display: flex; gap: 10px">
-              <input
-                type="text"
-                id="message"
-                placeholder="Deine Nachricht"
-                required
-                style="flex-grow: 1"
-              />
+              <div class="inputWrapper">
+                <input
+                  type="text"
+                  id="message"
+                  placeholder="Deine Nachricht"
+                  required
+                  style="
+                    flex-grow: 1;
+                    background: transparent;
+                    border: none;
+                    outline: none;
+                    color: white;
+                    padding: 10px;
+                  "
+                />
+
+                <button
+                  type="button"
+                  id="imageButton"
+                  style="
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    padding: 0 10px;
+                    display: flex;
+                    align-items: center;
+                    color: #888;
+                  "
+                >
+                  <svg
+                    class="humbleicons hi-plus-circle"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <g stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" d="M12 16V8m4 4H8" />
+                      <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </g>
+                  </svg>
+                </button>
+
+                <input type="file" id="imageInput" hidden />
+              </div>
               <button
                 type="submit"
                 class="button"

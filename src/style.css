@@ -246,5 +246,32 @@ tr:hover {
   color: #888; /* Сірий колір, як у твоїх підзаголовків */
   text-align: right; /* Притискаємо час до правого краю бульбашки */
   margin-top: 4px; /* Відступ зверху від тексту */
-  display: block; /* Займає окремий рядок */
+  display: block;
+}
+
+.circleButton {
+  background-color: #48abe0;
+  color: white;
+  border: none;
+  padding: 5px;
+  font-size: 31px;
+  height: 130px;
+  width: 130px;
+  box-shadow: 0 2px 4px darkslategray;
+  border-radius: 50%;
+  display: flex;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 10px;
+  flex-grow: 1;
+}
+
+#message:focus {
+  background: transparent;
+  box-shadow: none;
 }
