@@ -230,7 +230,7 @@ tr:hover {
   font-weight: bold; /* Робимо текст жирним */
   font-size: 0.85rem; /* Трішки менший за основний текст */
   margin-bottom: 4px; /* Відступ знизу, щоб не липло до тексту */
-  color: #367c91; /* Світліший відтінок твоєї морської хвилі */
+  color: #ededce; /* Світліший відтінок твоєї морської хвилі */
   display: block; /* Займає окремий рядок */
 }
 
@@ -259,7 +259,6 @@ tr:hover {
   width: 130px;
   box-shadow: 0 2px 4px darkslategray;
   border-radius: 50%;
-  display: flex;
 }
 
 .inputWrapper {

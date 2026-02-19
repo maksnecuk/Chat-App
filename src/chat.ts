@@ -75,6 +75,11 @@ webSocket.onmessage = (event) => {
       timeByImageElement.classList.add("message-time");
       imageContainer.classList.add("message-body");
       imageContainer.src = newMessage.message;
+      imageContainer.style.maxWidth = "100%";
+      imageContainer.style.maxHeight = "auto";
+      imageContainer.style.display = "block";
+      imageContainer.style.borderRadius = "8px";
+      imageContainer.style.marginTop = "5px";
 
       mainContainerForImage.appendChild(nicknameByImageElement);
       mainContainerForImage.appendChild(imageContainer);
