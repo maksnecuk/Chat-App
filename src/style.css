@@ -1,29 +1,47 @@
-/* Базові налаштування */
-body,
-html {
+/* --- 1. Базові налаштування (Reset & Base) --- */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
   background-color: #0d0d0d;
   color: #ededce;
 }
 
+/* --- 2. Головні контейнери (Layout) --- */
 #mainBackground {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: column; /* Вертикальне вирівнювання */
   justify-content: center;
-  gap: 30px;
+  align-items: center;
+  background-image: radial-gradient(circle at center, #1a2a3a 0%, #0c0e12 100%);
   padding: 20px;
+  gap: 30px;
 }
 
+/* Контейнер саме для чату (всередині chat.html) */
+#chatContainer {
+  display: flex;
+  flex-direction: column; /* Повідомлення одне під одним */
+  gap: 12px; /* Відступ між повідомленнями */
+  padding: 20px;
+  overflow-y: auto; /* Прокрутка, якщо багато тексту */
+  scroll-behavior: smooth;
+}
+
+/* --- 3. Компоненти інтерфейсу (Components) --- */
 .card {
   background: #1a1a1a;
   padding: 30px;
   border-radius: 16px;
   border: 1px solid #333;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   width: 100%;
   max-width: 500px;
 }
@@ -33,15 +51,24 @@ h2 {
   margin-top: 0;
   color: #fff;
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .subtitle {
   color: #888;
   text-align: center;
   margin-bottom: 20px;
+  font-size: 0.9rem;
 }
 
-/* Поля вводу */
+.description {
+  color: #888;
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* --- 4. Форми та Ввід (Forms & Inputs) --- */
 .input-group {
   margin-bottom: 20px;
   display: flex;
@@ -49,38 +76,84 @@ h2 {
   gap: 8px;
 }
 
+label {
+  color: #ededce;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 input[type="text"] {
   background: #252525;
   border: 1px solid #444;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 10px;
   color: #fff;
+  font-size: 1rem;
   outline: none;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 input[type="text"]:focus {
   border-color: #296374;
+  background: #2a2a2a;
+  box-shadow: 0 0 0 3px rgba(41, 99, 116, 0.2);
 }
 
-/* Кнопки */
+/* --- 5. Кнопки (Buttons) --- */
 .button {
   width: 100%;
   background-color: #296374;
   color: #ededce;
-  padding: 12px;
+  padding: 14px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  border-radius: 10px;
+  font-size: 1rem;
   font-weight: bold;
-  transition: 0.3s;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    transform 0.2s;
+  text-decoration: none;
+  display: block;
+  text-align: center;
 }
 
 .button:hover {
   background-color: #367c91;
+  transform: translateY(-2px);
 }
 
-/* Стилізація Таблиці */
+.button:active {
+  transform: translateY(0);
+}
+
+.button.outline {
+  background-color: transparent;
+  border: 2px solid #296374;
+  margin-top: 10px;
+}
+
+.button.outline:hover {
+  background-color: rgba(41, 99, 116, 0.1);
+}
+
+.link-back {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.3s;
+}
+
+.link-back:hover {
+  color: #296374;
+}
+
+/* --- 6. Таблиці (Tables) --- */
 .table-container {
   overflow-x: auto;
 }
@@ -110,182 +183,68 @@ tr:hover {
   background-color: rgba(41, 99, 116, 0.1);
 }
 
-#mainBackground {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #0d0d0d;
-}
+/* --- 7. Стилі для ЧАТУ (Chat Bubbles) --- */
 
-.card {
-  background-color: #1a1a1a;
-  padding: 40px;
-  border-radius: 20px;
-  border: 1px solid #333;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-}
-
-h1 {
-  color: #fff;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  color: #888;
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 30px;
-}
-
-.input-group {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-label {
-  color: #ededce;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-input[type="text"] {
-  background: #252525;
-  border: 1px solid #444;
-  padding: 14px;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-input[type="text"]:focus {
-  border-color: #296374;
-  background: #2a2a2a;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(41, 99, 116, 0.2);
-}
-
-.button {
-  width: 100%;
-  background-color: #296374;
-  color: #ededce;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition:
-    background 0.3s,
-    transform 0.2s;
-  margin-top: 10px;
-}
-
-.button:hover {
-  background-color: #367c91;
-  transform: translateY(-2px);
-}
-
-.button:active {
-  transform: translateY(0);
-}
-
-.link-back {
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  color: #666;
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: color 0.3s;
-}
-
-.link-back:hover {
-  color: #296374;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body,
-html {
-  height: 100%;
-  font-family: "Segoe UI", system-ui, sans-serif;
-}
-
-#mainBackground {
-  background-color: #0c0e12;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: radial-gradient(circle at center, #1a2a3a 0%, #0c0e12 100%);
-}
-
-#cardBackground {
-  background-color: #1a1a1a;
-  padding: 50px 40px;
-  border-radius: 24px;
-  border: 1px solid #333;
-  text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-  width: 100%;
-  max-width: 400px;
-}
-
-#greetings {
-  color: #fff;
-  font-size: 2.5rem;
-  margin-bottom: 8px;
-  letter-spacing: -1px;
-}
-
-.description {
-  color: #888;
-  margin-bottom: 32px;
-  font-size: 0.95rem;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.button {
-  display: block;
-  padding: 14px 24px;
-  background-color: #296374;
-  color: #ededce;
-  text-decoration: none;
-  font-weight: 600;
+/* Спільні налаштування для бульбашок */
+.myMessage,
+.otherMessage {
+  padding: 10px 16px;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid transparent;
+  max-width: 75%; /* Обмеження ширини */
+  word-wrap: break-word; /* Перенос слів */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.button:hover {
-  background-color: #367c91;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(41, 99, 116, 0.4);
+/* Твої повідомлення (Справа + Бірюзові) */
+.myMessage {
+  align-self: flex-end; /* Притискаємо вправо */
+  background-color: #296374;
+  color: #ededce;
+  border-bottom-right-radius: 2px; /* Ефект "хвостика" */
 }
 
-.button.outline {
-  background-color: transparent;
-  border: 2px solid #296374;
+/* Чужі повідомлення (Зліва + Темні) */
+.otherMessage {
+  align-self: flex-start; /* Притискаємо вліво */
+  background-color: #252525;
+  color: #ffffff;
+  border: 1px solid #333;
+  border-bottom-left-radius: 2px; /* Ефект "хвостика" */
 }
 
-.button.outline:hover {
-  background-color: rgba(41, 99, 116, 0.1);
+/* Системні повідомлення (Центр + Прозорі) */
+.sysMessage {
+  align-self: center;
+  color: #888;
+  font-size: 0.85rem;
+  margin: 10px 0;
+  font-style: italic;
+  background: transparent;
+}
+/* --- Стилі для внутрішніх частин повідомлення --- */
+
+/* Автор повідомлення (Нікнейм) */
+.message-author {
+  font-weight: bold; /* Робимо текст жирним */
+  font-size: 0.85rem; /* Трішки менший за основний текст */
+  margin-bottom: 4px; /* Відступ знизу, щоб не липло до тексту */
+  color: #367c91; /* Світліший відтінок твоєї морської хвилі */
+  display: block; /* Займає окремий рядок */
+}
+
+/* Тіло повідомлення (Основний текст) */
+.message-body {
+  font-size: 1rem; /* Стандартний розмір */
+  word-wrap: break-word; /* Переносити довгі слова, щоб не ламати чат */
+}
+
+/* Час відправлення */
+.message-time {
+  font-size: 0.75rem; /* Маленький шрифт */
+  color: #888; /* Сірий колір, як у твоїх підзаголовків */
+  text-align: right; /* Притискаємо час до правого краю бульбашки */
+  margin-top: 4px; /* Відступ зверху від тексту */
+  display: block; /* Займає окремий рядок */
 }

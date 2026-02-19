@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <div
+      style="
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #0d0d0d;
+      "
+    >
+      <div id="chatContainer" style="flex-grow: 1; overflow-y: auto"></div>
+
+      <div
+        class="card"
+        style="
+          border-radius: 20px 20px 0 0;
+          max-width: 100%;
+          border-left: none;
+          border-right: none;
+          border-bottom: none;
+        "
+      >
+        <form id="messageForm">
+          <div class="input-group" style="margin-bottom: 0">
+            <label for="message" style="display: none">Deine Nachricht:</label>
+            <div style="display: flex; gap: 10px">
+              <input
+                type="text"
+                id="message"
+                placeholder="Deine Nachricht"
+                required
+                style="flex-grow: 1"
+              />
+              <button
+                type="submit"
+                class="button"
+                style="width: auto; margin-top: 0"
+              >
+                Abschicken
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="src/chat.ts"></script>
+  </body>
+</html>
