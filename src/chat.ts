@@ -13,7 +13,7 @@ if (!nickName || !roomId) {
   throw new Error("Es fehlt einigen Daten");
 }
 
-const socketUrl = `wss://chat.homebin.dev/join/${roomId}?user=${nickName}`;
+const socketUrl = `wss://chat.homebin.dev/join/${roomId}?user=${nickName}&userInfo=true`;
 const webSocket = new WebSocket(socketUrl);
 
 interface messageObjectOfServer {
@@ -24,9 +24,18 @@ interface messageObjectOfServer {
     id: string;
     name: string;
   };
+  additionalInfo?: {
+    self?: boolean;
+    joinedUserId: string;
+  };
 }
+let myId: string;
 webSocket.onmessage = (event) => {
   const newMessage: messageObjectOfServer = JSON.parse(event.data);
+  console.log(newMessage);
+  if (newMessage.additionalInfo?.self) {
+    myId = newMessage.additionalInfo.joinedUserId;
+  } else window.location.reload;
 
   switch (newMessage.type) {
     case "message":
@@ -39,7 +48,7 @@ webSocket.onmessage = (event) => {
       messageElement.textContent = newMessage.message;
       timeElement.textContent = newMessage.timestamp.slice(11, 16);
 
-      if (newMessage.user.name === nickName) {
+      if (newMessage.user.id === myId) {
         mainContainer.classList.add("myMessage");
       } else {
         mainContainer.classList.add("otherMessage");
@@ -66,7 +75,7 @@ webSocket.onmessage = (event) => {
 
       nicknameByImageElement.textContent = newMessage.user.name;
       timeByImageElement.textContent = newMessage.timestamp.slice(11, 16);
-      if (nickName === newMessage.user.name) {
+      if (newMessage.user.id === myId) {
         mainContainerForImage.classList.add("myMessage");
       } else {
         mainContainerForImage.classList.add("otherMessage");
