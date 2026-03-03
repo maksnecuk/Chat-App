@@ -11,13 +11,14 @@ html {
   font-family: "Segoe UI", Roboto, system-ui, sans-serif;
   background-color: #0d0d0d;
   color: #ededce;
+  overflow: hidden; /* Запобігаємо подвійній прокрутці */
 }
 
 /* --- 2. Головні контейнери (Layout) --- */
 #mainBackground {
   min-height: 100vh;
   display: flex;
-  flex-direction: column; /* Вертикальне вирівнювання */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-image: radial-gradient(circle at center, #1a2a3a 0%, #0c0e12 100%);
@@ -25,13 +26,21 @@ html {
   gap: 30px;
 }
 
-/* Контейнер саме для чату (всередині chat.html) */
-#chatContainer {
+/* Лейаут для сторінки чату */
+.chat-layout {
+  height: 100vh;
   display: flex;
-  flex-direction: column; /* Повідомлення одне під одним */
-  gap: 12px; /* Відступ між повідомленнями */
+  flex-direction: column;
+  background-color: #0d0d0d;
+}
+
+#chatContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   padding: 20px;
-  overflow-y: auto; /* Прокрутка, якщо багато тексту */
+  overflow-y: auto;
   scroll-behavior: smooth;
 }
 
@@ -43,7 +52,17 @@ html {
   border: 1px solid #333;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   width: 100%;
-  max-width: 500px;
+  max-width: 600px; /* Трохи збільшимо для зручності таблиць */
+}
+
+/* Специфічна картка для форми вводу в чаті */
+.message-form-card {
+  border-radius: 20px 20px 0 0;
+  max-width: 100%;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  padding: 15px 20px;
 }
 
 h1,
@@ -54,18 +73,24 @@ h2 {
   margin-bottom: 10px;
 }
 
-.subtitle {
+.subtitle,
+.description {
   color: #888;
   text-align: center;
   margin-bottom: 20px;
   font-size: 0.9rem;
 }
 
-.description {
-  color: #888;
-  margin-bottom: 32px;
-  font-size: 0.95rem;
-  text-align: center;
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.list-section {
+  width: 100%;
+  max-width: 600px; /* Така ж ширина, як і в інших карток */
 }
 
 /* --- 4. Форми та Ввід (Forms & Inputs) --- */
@@ -82,6 +107,21 @@ label {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 10px;
+  flex-grow: 1;
+  background: #252525;
+  transition: border-color 0.3s;
+}
+
+.inputWrapper:focus-within {
+  border-color: #296374;
 }
 
 input[type="text"] {
@@ -101,27 +141,38 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 3px rgba(41, 99, 116, 0.2);
 }
 
+/* Стиль для інпуту саме в чаті */
+.message-input {
+  flex-grow: 1;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: white;
+  padding: 10px !important;
+  box-shadow: none !important;
+}
+
 /* --- 5. Кнопки (Buttons) --- */
 .button {
   width: 100%;
   background-color: #296374;
   color: #ededce;
   padding: 14px;
-  border: none;
+  border: 2px solid #296374;
   border-radius: 10px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition:
-    background 0.3s,
-    transform 0.2s;
+  transition: all 0.3s ease;
   text-decoration: none;
   display: block;
   text-align: center;
 }
 
 .button:hover {
-  background-color: #367c91;
+  background-color: transparent;
+  color: #ededce;
+  border-color: #296374;
   transform: translateY(-2px);
 }
 
@@ -130,13 +181,32 @@ input[type="text"]:focus {
 }
 
 .button.outline {
-  background-color: transparent;
-  border: 2px solid #296374;
-  margin-top: 10px;
+  background-color: #296374;
 }
 
 .button.outline:hover {
-  background-color: rgba(41, 99, 116, 0.1);
+  background-color: transparent;
+}
+
+.submit-button {
+  width: auto !important;
+  margin-top: 0 !important;
+  min-width: 100px;
+}
+
+.image-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.image-button:hover {
+  color: #296374;
 }
 
 .link-back {
@@ -181,40 +251,38 @@ th {
 
 tr:hover {
   background-color: rgba(41, 99, 116, 0.1);
+  cursor: pointer;
 }
 
 /* --- 7. Стилі для ЧАТУ (Chat Bubbles) --- */
 
-/* Спільні налаштування для бульбашок */
 .myMessage,
 .otherMessage {
   padding: 10px 16px;
   border-radius: 12px;
-  max-width: 75%; /* Обмеження ширини */
-  word-wrap: break-word; /* Перенос слів */
+  max-width: 75%;
+  word-wrap: break-word;
   font-size: 0.95rem;
   line-height: 1.4;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
-/* Твої повідомлення (Справа + Бірюзові) */
 .myMessage {
-  align-self: flex-end; /* Притискаємо вправо */
+  align-self: flex-end;
   background-color: #296374;
   color: #ededce;
-  border-bottom-right-radius: 2px; /* Ефект "хвостика" */
+  border-bottom-right-radius: 2px;
 }
 
-/* Чужі повідомлення (Зліва + Темні) */
 .otherMessage {
-  align-self: flex-start; /* Притискаємо вліво */
+  align-self: flex-start;
   background-color: #252525;
   color: #ffffff;
   border: 1px solid #333;
-  border-bottom-left-radius: 2px; /* Ефект "хвостика" */
+  border-bottom-left-radius: 2px;
 }
 
-/* Системні повідомлення (Центр + Прозорі) */
 .sysMessage {
   align-self: center;
   color: #888;
@@ -222,55 +290,34 @@ tr:hover {
   margin: 10px 0;
   font-style: italic;
   background: transparent;
+  text-align: center;
 }
-/* --- Стилі для внутрішніх частин повідомлення --- */
 
-/* Автор повідомлення (Нікнейм) */
 .message-author {
-  font-weight: bold; /* Робимо текст жирним */
-  font-size: 0.85rem; /* Трішки менший за основний текст */
-  margin-bottom: 4px; /* Відступ знизу, щоб не липло до тексту */
-  color: #ededce; /* Світліший відтінок твоєї морської хвилі */
-  display: block; /* Займає окремий рядок */
-}
-
-/* Тіло повідомлення (Основний текст) */
-.message-body {
-  font-size: 1rem; /* Стандартний розмір */
-  word-wrap: break-word; /* Переносити довгі слова, щоб не ламати чат */
-}
-
-/* Час відправлення */
-.message-time {
-  font-size: 0.75rem; /* Маленький шрифт */
-  color: #888; /* Сірий колір, як у твоїх підзаголовків */
-  text-align: right; /* Притискаємо час до правого краю бульбашки */
-  margin-top: 4px; /* Відступ зверху від тексту */
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #ededce;
   display: block;
 }
 
-.circleButton {
-  background-color: #48abe0;
-  color: white;
-  border: none;
-  padding: 5px;
-  font-size: 31px;
-  height: 130px;
-  width: 130px;
-  box-shadow: 0 2px 4px darkslategray;
-  border-radius: 50%;
+.message-body {
+  font-size: 1rem;
+  word-wrap: break-word;
 }
 
-.inputWrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #444;
-  padding: 8px;
-  border-radius: 10px;
-  flex-grow: 1;
+.message-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  margin-top: 5px;
 }
 
-#message:focus {
-  background: transparent;
-  box-shadow: none;
+.message-time {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+  margin-top: 4px;
+  display: block;
 }

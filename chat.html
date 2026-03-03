@@ -7,26 +7,10 @@
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
-    <div
-      style="
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background-color: #0d0d0d;
-      "
-    >
-      <div id="chatContainer" style="flex-grow: 1; overflow-y: auto"></div>
+    <div class="chat-layout">
+      <div id="chatContainer"></div>
 
-      <div
-        class="card"
-        style="
-          border-radius: 20px 20px 0 0;
-          max-width: 100%;
-          border-left: none;
-          border-right: none;
-          border-bottom: none;
-        "
-      >
+      <div class="card message-form-card">
         <form id="messageForm">
           <div class="input-group" style="margin-bottom: 0">
             <label for="message" style="display: none">Deine Nachricht:</label>
@@ -35,31 +19,12 @@
                 <input
                   type="text"
                   id="message"
+                  class="message-input"
                   placeholder="Deine Nachricht"
                   required
-                  style="
-                    flex-grow: 1;
-                    background: transparent;
-                    border: none;
-                    outline: none;
-                    color: white;
-                    padding: 10px;
-                  "
                 />
 
-                <button
-                  type="button"
-                  id="imageButton"
-                  style="
-                    background: transparent;
-                    border: none;
-                    cursor: pointer;
-                    padding: 0 10px;
-                    display: flex;
-                    align-items: center;
-                    color: #888;
-                  "
-                >
+                <button type="button" id="imageButton" class="image-button">
                   <svg
                     class="humbleicons hi-plus-circle"
                     xmlns="http://www.w3.org/2000/svg"
@@ -79,8 +44,7 @@
               </div>
               <button
                 type="submit"
-                class="button"
-                style="width: auto; margin-top: 0"
+                class="button submit-button"
               >
                 Abschicken
               </button>

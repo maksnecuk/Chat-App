@@ -1,7 +1,9 @@
 const nickName = sessionStorage.getItem("nickname");
 const roomId = sessionStorage.getItem("roomId");
 
-const chatContainer = document.getElementById("chatContainer");
+const chatContainer = document.getElementById(
+  "chatContainer",
+) as HTMLDivElement;
 
 const messageForm = document.getElementById("messageForm") as HTMLFormElement;
 const messageInput = document.getElementById("message") as HTMLInputElement;
@@ -10,13 +12,13 @@ const imageInput = document.getElementById("imageInput") as HTMLInputElement;
 
 if (!nickName || !roomId) {
   window.location.href = "./enterRoom.html";
-  throw new Error("Es fehlt einigen Daten");
 }
 
 const socketUrl = `wss://chat.homebin.dev/join/${roomId}?user=${nickName}&userInfo=true`;
 const webSocket = new WebSocket(socketUrl);
 
-interface messageObjectOfServer {
+interface MessageObjectOfServer {
+  id: string;
   type: string;
   message: string;
   timestamp: string;
@@ -26,16 +28,21 @@ interface messageObjectOfServer {
   };
   additionalInfo?: {
     self?: boolean;
-    joinedUserId: string;
+    joinedUserId?: string;
   };
 }
-let myId: string;
-webSocket.onmessage = (event) => {
-  const newMessage: messageObjectOfServer = JSON.parse(event.data);
-  console.log(newMessage);
-  if (newMessage.additionalInfo?.self) {
+let myId: string | undefined;
+webSocket.addEventListener("message", (event) => {
+  const newMessage: MessageObjectOfServer = JSON.parse(event.data);
+
+  console.log(typeof event.data);
+  /*TODO
+  перевірити тип івенту і додати обробку помилок
+  */
+  //console.log(newMessage);
+  if (newMessage.additionalInfo?.self && newMessage.type === "system") {
     myId = newMessage.additionalInfo.joinedUserId;
-  } else window.location.reload;
+  }
 
   switch (newMessage.type) {
     case "message":
@@ -50,6 +57,13 @@ webSocket.onmessage = (event) => {
 
       if (newMessage.user.id === myId) {
         mainContainer.classList.add("myMessage");
+        mainContainer.dataset.messageId = newMessage.id;
+        mainContainer.dataset.userId = newMessage.user.id;
+        mainContainer.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
+          //IdOfEditedMessage = newMessage.id;
+          messageInput.value = newMessage.message;
+        });
       } else {
         mainContainer.classList.add("otherMessage");
       }
@@ -82,20 +96,14 @@ webSocket.onmessage = (event) => {
       }
       nicknameByImageElement.classList.add("message-author");
       timeByImageElement.classList.add("message-time");
-      imageContainer.classList.add("message-body");
+      imageContainer.classList.add("message-image");
       imageContainer.src = newMessage.message;
-      imageContainer.style.maxWidth = "100%";
-      imageContainer.style.maxHeight = "auto";
-      imageContainer.style.display = "block";
-      imageContainer.style.borderRadius = "8px";
-      imageContainer.style.marginTop = "5px";
 
       mainContainerForImage.appendChild(nicknameByImageElement);
       mainContainerForImage.appendChild(imageContainer);
       mainContainerForImage.appendChild(timeByImageElement);
-      if (chatContainer) {
-        chatContainer.appendChild(mainContainerForImage);
-      }
+
+      chatContainer.appendChild(mainContainerForImage);
 
       break;
     case "system":
@@ -104,16 +112,16 @@ webSocket.onmessage = (event) => {
 
       systemMessageElement.textContent = newMessage.message;
       mainContainerForSystem.appendChild(systemMessageElement);
+      /* почитати що робить add  */
       mainContainerForSystem.classList.add("sysMessage");
 
-      if (chatContainer) {
-        chatContainer.appendChild(mainContainerForSystem);
-      }
+      chatContainer.appendChild(mainContainerForSystem);
 
       break;
   }
-};
-imageButton.addEventListener("click", (event: MouseEvent) => {
+});
+
+imageButton.addEventListener("click", () => {
   imageInput.click();
 });
 
@@ -150,7 +158,21 @@ messageForm.addEventListener("submit", (event: SubmitEvent) => {
       type: "message",
       message: messageText,
     };
+    /*if (IdOfEditedMessage) {
+      const url:string = `https://chat.homebin.dev/rooms/${roomId}/messages/${IdOfEditedMessage}`
+      async function sendEditMessage(url:string) {
+        const response = await fetch(url);
+        if(!response.ok){
+          throw new Error(`HTTP error!: ${response.status}`);
+        }
+        const data = (await response.json()) as unknown as MessageObjectOfServer;
+        return data.
+      }
+    } else {
+      webSocket.send(JSON.stringify(payload));
 
+      messageInput.value = "";
+    }*/
     webSocket.send(JSON.stringify(payload));
 
     messageInput.value = "";
