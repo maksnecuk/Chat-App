@@ -74,11 +74,7 @@ webSocket.addEventListener("message", (event) => {
       mainContainer.appendChild(nicknameElement);
       mainContainer.appendChild(messageElement);
       mainContainer.appendChild(timeElement);
-
-      if (chatContainer) {
-        chatContainer.appendChild(mainContainer);
-      }
-
+      chatContainer.appendChild(mainContainer);
       break;
 
     case "image":
