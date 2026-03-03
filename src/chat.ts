@@ -36,10 +36,6 @@ webSocket.addEventListener("message", (event) => {
   const newMessage: MessageObjectOfServer = JSON.parse(event.data);
 
   console.log(typeof event.data);
-  /*TODO
-  перевірити тип івенту і додати обробку помилок
-  */
-  //console.log(newMessage);
   if (newMessage.additionalInfo?.self && newMessage.type === "system") {
     myId = newMessage.additionalInfo.joinedUserId;
   }
