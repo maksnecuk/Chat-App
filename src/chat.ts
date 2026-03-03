@@ -104,7 +104,7 @@ webSocket.addEventListener("message", (event) => {
 
       systemMessageElement.textContent = newMessage.message;
       mainContainerForSystem.appendChild(systemMessageElement);
-      /* почитати що робить add  */
+
       mainContainerForSystem.classList.add("sysMessage");
 
       chatContainer.appendChild(mainContainerForSystem);
