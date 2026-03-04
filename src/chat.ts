@@ -5,6 +5,8 @@ const chatContainer = document.getElementById(
   "chatContainer",
 ) as HTMLDivElement;
 
+let IdOfEditedMessage: string | null = null;
+
 const messageForm = document.getElementById("messageForm") as HTMLFormElement;
 const messageInput = document.getElementById("message") as HTMLInputElement;
 const imageButton = document.getElementById("imageButton") as HTMLButtonElement;
@@ -29,48 +31,70 @@ interface MessageObjectOfServer {
   additionalInfo?: {
     self?: boolean;
     joinedUserId?: string;
+    modified?: boolean;
   };
 }
+
 let myId: string | undefined;
+
 webSocket.addEventListener("message", (event) => {
   const newMessage: MessageObjectOfServer = JSON.parse(event.data);
-
-  console.log(typeof event.data);
+  console.log(newMessage);
+  const existingMsg = document.querySelector(
+    `[data-message-id="${newMessage.id}"]`,
+  );
   if (newMessage.additionalInfo?.self && newMessage.type === "system") {
     myId = newMessage.additionalInfo.joinedUserId;
   }
 
   switch (newMessage.type) {
     case "message":
-      const mainContainer = document.createElement("div");
-      const nicknameElement = document.createElement("div");
-      const messageElement = document.createElement("div");
-      const timeElement = document.createElement("div");
-
-      nicknameElement.textContent = newMessage.user.name;
-      messageElement.textContent = newMessage.message;
-      timeElement.textContent = newMessage.timestamp.slice(11, 16);
-
-      if (newMessage.user.id === myId) {
-        mainContainer.classList.add("myMessage");
-        mainContainer.dataset.messageId = newMessage.id;
-        mainContainer.dataset.userId = newMessage.user.id;
-        mainContainer.addEventListener("contextmenu", (event) => {
-          event.preventDefault();
-          //IdOfEditedMessage = newMessage.id;
-          messageInput.value = newMessage.message;
-        });
+      if (existingMsg && myId === newMessage.user.id) {
+        const contentDiv = existingMsg.querySelector(
+          `[data-role = "content"]`,
+        )!;
+        const timeDiv = existingMsg.querySelector(`[data-role = "time"]`)!;
+        contentDiv.textContent = newMessage.message;
+        timeDiv.textContent = `edited ${newMessage.timestamp.slice(11, 16)}`;
       } else {
-        mainContainer.classList.add("otherMessage");
-      }
-      nicknameElement.classList.add("message-author");
-      messageElement.classList.add("message-body");
-      timeElement.classList.add("message-time");
+        const mainContainer = document.createElement("div");
+        const nicknameElement = document.createElement("div");
+        const messageElement = document.createElement("div");
+        const timeElement = document.createElement("div");
 
-      mainContainer.appendChild(nicknameElement);
-      mainContainer.appendChild(messageElement);
-      mainContainer.appendChild(timeElement);
-      chatContainer.appendChild(mainContainer);
+        nicknameElement.textContent = newMessage.user.name;
+
+        messageElement.textContent = newMessage.message;
+        timeElement.textContent = newMessage.timestamp.slice(11, 16);
+
+        if (newMessage.user.id === myId) {
+          mainContainer.classList.add("myMessage");
+          mainContainer.dataset.messageId = newMessage.id;
+          mainContainer.dataset.userId = newMessage.user.id;
+
+          mainContainer.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            IdOfEditedMessage = newMessage.id;
+            messageInput.value =
+              mainContainer.querySelector(`[data-role = "content"]`)!
+                .textContent ?? "";
+          });
+        } else {
+          mainContainer.classList.add("otherMessage");
+        }
+
+        nicknameElement.classList.add("message-author");
+        nicknameElement.dataset.role = "author";
+        messageElement.classList.add("message-body");
+        messageElement.dataset.role = "content";
+        timeElement.classList.add("message-time");
+        timeElement.dataset.role = "time";
+
+        mainContainer.appendChild(nicknameElement);
+        mainContainer.appendChild(messageElement);
+        mainContainer.appendChild(timeElement);
+        chatContainer.appendChild(mainContainer);
+      }
       break;
 
     case "image":
@@ -96,19 +120,17 @@ webSocket.addEventListener("message", (event) => {
       mainContainerForImage.appendChild(timeByImageElement);
 
       chatContainer.appendChild(mainContainerForImage);
-
       break;
+
     case "system":
       const mainContainerForSystem = document.createElement("div");
       const systemMessageElement = document.createElement("div");
 
       systemMessageElement.textContent = newMessage.message;
       mainContainerForSystem.appendChild(systemMessageElement);
-
       mainContainerForSystem.classList.add("sysMessage");
 
       chatContainer.appendChild(mainContainerForSystem);
-
       break;
   }
 });
@@ -121,8 +143,7 @@ imageInput.addEventListener("change", () => {
   if (imageInput.files && imageInput.files.length > 0) {
     const file = imageInput.files[0];
     const reader = new FileReader();
-
-    reader.onload = () => {
+    reader.addEventListener("load", () => {
       const base64String = reader.result as string;
 
       if (webSocket.readyState === WebSocket.OPEN) {
@@ -134,39 +155,44 @@ imageInput.addEventListener("change", () => {
         );
         imageInput.value = "";
       }
-    };
-
+    });
     reader.readAsDataURL(file);
   }
 });
 
-messageForm.addEventListener("submit", (event: SubmitEvent) => {
+messageForm.addEventListener("submit", async (event: SubmitEvent) => {
   event.preventDefault();
 
   const messageText = messageInput.value;
+  if (!messageText.trim()) return;
 
   if (webSocket.readyState === WebSocket.OPEN) {
-    const payload = {
-      type: "message",
-      message: messageText,
-    };
-    /*if (IdOfEditedMessage) {
-      const url:string = `https://chat.homebin.dev/rooms/${roomId}/messages/${IdOfEditedMessage}`
-      async function sendEditMessage(url:string) {
-        const response = await fetch(url);
-        if(!response.ok){
+    if (IdOfEditedMessage) {
+      const url = `https://chat.homebin.dev/rooms/${roomId}/messages/${IdOfEditedMessage}`;
+      try {
+        const response = await fetch(url, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: messageText }),
+        });
+
+        if (!response.ok) {
           throw new Error(`HTTP error!: ${response.status}`);
         }
-        const data = (await response.json()) as unknown as MessageObjectOfServer;
-        return data.
+
+        IdOfEditedMessage = null;
+      } catch (error) {
+        console.error("Error by PATCH:", error);
       }
     } else {
+      const payload = {
+        type: "message",
+        message: messageText,
+      };
       webSocket.send(JSON.stringify(payload));
-
-      messageInput.value = "";
-    }*/
-    webSocket.send(JSON.stringify(payload));
-
+    }
     messageInput.value = "";
   }
 });

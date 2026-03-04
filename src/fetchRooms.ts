@@ -20,7 +20,6 @@ export async function fetchRooms(url: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = (await response.json()) as unknown as roomsResponse;
-    //console.log(data);
     return data.rooms;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
