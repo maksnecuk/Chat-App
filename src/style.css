@@ -87,7 +87,10 @@ h2 {
   gap: 15px;
   width: 100%;
 }
-
+.button-group--onInput {
+  width: auto;
+  row-gap: 5px;
+}
 .list-section {
   width: 100%;
   max-width: 600px; /* Така ж ширина, як і в інших карток */
@@ -209,6 +212,21 @@ input[type="text"]:focus {
   color: #296374;
 }
 
+.cancel-button {
+  width: auto !important;
+  padding: 6px 20px !important; /* Менший вертикальний паддінг (6px) робить її нижчою */
+  font-size: 0.85rem !important; /* Трохи менший шрифт, щоб виглядало гармонійно */
+  background-color: #ae1c1c !important; /* Колір, щоб відрізнялася від основної */
+  border-color: #ae1c1c !important;
+  min-height: unset !important; /* Прибираємо обмеження висоти, якщо вони є */
+}
+
+.cancel-button:hover {
+  background-color: transparent !important;
+  border-color: #ae1c1c !important;
+  color: #ededce !important;
+}
+
 .link-back {
   display: block;
   text-align: center;
@@ -221,6 +239,10 @@ input[type="text"]:focus {
 
 .link-back:hover {
   color: #296374;
+}
+
+.is-hidden {
+  display: none;
 }
 
 /* --- 6. Таблиці (Tables) --- */

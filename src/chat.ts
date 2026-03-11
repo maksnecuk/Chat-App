@@ -1,9 +1,7 @@
 const nickName = sessionStorage.getItem("nickname");
 const roomId = sessionStorage.getItem("roomId");
 
-const chatContainer = document.getElementById(
-  "chatContainer",
-) as HTMLDivElement;
+const chatContainer = document.getElementById("chatContainer") as HTMLDivElement;
 
 let IdOfEditedMessage: string | null = null;
 
@@ -11,7 +9,7 @@ const messageForm = document.getElementById("messageForm") as HTMLFormElement;
 const messageInput = document.getElementById("message") as HTMLInputElement;
 const imageButton = document.getElementById("imageButton") as HTMLButtonElement;
 const imageInput = document.getElementById("imageInput") as HTMLInputElement;
-
+const cancelButton = document.getElementById("cancelButton") as HTMLButtonElement;
 if (!nickName || !roomId) {
   window.location.href = "./enterRoom.html";
 }
@@ -39,20 +37,15 @@ let myId: string | undefined;
 
 webSocket.addEventListener("message", (event) => {
   const newMessage: MessageObjectOfServer = JSON.parse(event.data);
-  console.log(newMessage);
-  const existingMsg = document.querySelector(
-    `[data-message-id="${newMessage.id}"]`,
-  );
+  const existingMsg = document.querySelector(`[data-message-id="${newMessage.id}"]`);
   if (newMessage.additionalInfo?.self && newMessage.type === "system") {
     myId = newMessage.additionalInfo.joinedUserId;
   }
 
   switch (newMessage.type) {
     case "message":
-      if (existingMsg && myId === newMessage.user.id) {
-        const contentDiv = existingMsg.querySelector(
-          `[data-role = "content"]`,
-        )!;
+      if (existingMsg) {
+        const contentDiv = existingMsg.querySelector(`[data-role = "content"]`)!;
         const timeDiv = existingMsg.querySelector(`[data-role = "time"]`)!;
         contentDiv.textContent = newMessage.message;
         timeDiv.textContent = `edited ${newMessage.timestamp.slice(11, 16)}`;
@@ -74,13 +67,16 @@ webSocket.addEventListener("message", (event) => {
 
           mainContainer.addEventListener("contextmenu", (event) => {
             event.preventDefault();
+            cancelButton.classList.remove("is-hidden");
+
             IdOfEditedMessage = newMessage.id;
-            messageInput.value =
-              mainContainer.querySelector(`[data-role = "content"]`)!
-                .textContent ?? "";
+
+            messageInput.value = mainContainer.querySelector(`[data-role = "content"]`)!.textContent ?? "";
           });
         } else {
           mainContainer.classList.add("otherMessage");
+          mainContainer.dataset.messageId = newMessage.id;
+          mainContainer.dataset.userId = newMessage.user.id;
         }
 
         nicknameElement.classList.add("message-author");
@@ -183,6 +179,7 @@ messageForm.addEventListener("submit", async (event: SubmitEvent) => {
         }
 
         IdOfEditedMessage = null;
+        messageInput.value = "";
       } catch (error) {
         console.error("Error by PATCH:", error);
       }
@@ -195,4 +192,10 @@ messageForm.addEventListener("submit", async (event: SubmitEvent) => {
     }
     messageInput.value = "";
   }
+});
+
+messageForm.addEventListener("reset", () => {
+  IdOfEditedMessage = null;
+  messageInput.value = "";
+  cancelButton.classList.add("is-hidden");
 });

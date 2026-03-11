@@ -16,13 +16,7 @@
             <label for="message" style="display: none">Deine Nachricht:</label>
             <div style="display: flex; gap: 10px">
               <div class="inputWrapper">
-                <input
-                  type="text"
-                  id="message"
-                  class="message-input"
-                  placeholder="Deine Nachricht"
-                  required
-                />
+                <input type="text" id="message" class="message-input" placeholder="Deine Nachricht" required />
 
                 <button type="button" id="imageButton" class="image-button">
                   <svg
@@ -40,16 +34,14 @@
                   </svg>
                 </button>
 
-                <input
-                  type="file"
-                  id="imageInput"
-                  hidden
-                  accept=".jpg, .jpeg, .png"
-                />
+                <input type="file" id="imageInput" hidden accept=".jpg, .jpeg, .png" />
               </div>
-              <button type="submit" class="button submit-button">
-                Abschicken
-              </button>
+              <div class="button-group button-group--onInput">
+                <button type="submit" class="button submit-button">Send</button>
+                <button id="cancelButton" type="reset" class="button submit-button cancel-button is-hidden">
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </form>
