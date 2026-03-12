@@ -1,12 +1,10 @@
 import { fetchMessage } from "./fetchMessage.ts";
-import { renderFunc } from "./renderMessage.ts";
+import { renderFunc, IdOfEditedMessageSetValue, IdOfEditedMessage } from "./renderMessage.ts";
 const nickName = sessionStorage.getItem("nickname");
 const roomId = sessionStorage.getItem("roomId");
 const myId = sessionStorage.getItem("userId");
 
 export const chatContainer = document.getElementById("chatContainer") as HTMLDivElement;
-
-let IdOfEditedMessage: string | undefined = undefined;
 
 const messageForm = document.getElementById("messageForm") as HTMLFormElement;
 export const messageInput = document.getElementById("message") as HTMLInputElement;
@@ -39,13 +37,13 @@ export interface MessageObjectOfServer {
 
 webSocket.addEventListener("message", (event) => {
   const newMessage: MessageObjectOfServer = JSON.parse(event.data);
-  renderFunc(newMessage, IdOfEditedMessage);
+  renderFunc(newMessage);
   console.log(newMessage);
 });
 
 const messagesData = await fetchMessage(url);
 for (let message of messagesData) {
-  renderFunc(message, IdOfEditedMessage);
+  renderFunc(message);
 }
 
 imageButton.addEventListener("click", () => {
@@ -95,7 +93,7 @@ messageForm.addEventListener("submit", async (event: SubmitEvent) => {
           throw new Error(`HTTP error!: ${response.status}`);
         }
 
-        IdOfEditedMessage = undefined;
+        IdOfEditedMessageSetValue(undefined);
         messageInput.value = "";
         cancelButton.classList.add("is-hidden");
       } catch (error) {
@@ -113,7 +111,7 @@ messageForm.addEventListener("submit", async (event: SubmitEvent) => {
 });
 
 messageForm.addEventListener("reset", () => {
-  IdOfEditedMessage = undefined;
+  IdOfEditedMessageSetValue(undefined);
   messageInput.value = "";
   cancelButton.classList.add("is-hidden");
 });

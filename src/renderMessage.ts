@@ -1,6 +1,12 @@
 import { cancelButton, messageInput, chatContainer } from "./chat";
 import type { MessageObjectOfServer } from "./chat";
-export function renderFunc(newMessage: MessageObjectOfServer, IdOfEditedMessage?: string) {
+
+export let IdOfEditedMessage: string | undefined = undefined;
+export function IdOfEditedMessageSetValue(IdOfEditedMessageValue: string | undefined) {
+  IdOfEditedMessage = IdOfEditedMessageValue;
+}
+
+export function renderFunc(newMessage: MessageObjectOfServer) {
   const myId = sessionStorage.getItem("userId");
   const existingMsg = document.querySelector(`[data-message-id="${newMessage.id}"]`);
   switch (newMessage.type) {
@@ -30,7 +36,7 @@ export function renderFunc(newMessage: MessageObjectOfServer, IdOfEditedMessage?
             event.preventDefault();
             cancelButton.classList.remove("is-hidden");
 
-            IdOfEditedMessage = newMessage.id;
+            IdOfEditedMessageSetValue(newMessage.id);
 
             messageInput.value = mainContainer.querySelector(`[data-role = "content"]`)!.textContent ?? "";
           });
