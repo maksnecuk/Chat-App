@@ -1,8 +1,8 @@
-import type { messageResponse } from "./fetchMessage.ts";
 import { fetchMessage } from "./fetchMessage.ts";
 import { renderFunc } from "./renderMessage.ts";
 const nickName = sessionStorage.getItem("nickname");
 const roomId = sessionStorage.getItem("roomId");
+const myId = sessionStorage.getItem("userId");
 
 export const chatContainer = document.getElementById("chatContainer") as HTMLDivElement;
 
@@ -13,12 +13,12 @@ export const messageInput = document.getElementById("message") as HTMLInputEleme
 const imageButton = document.getElementById("imageButton") as HTMLButtonElement;
 const imageInput = document.getElementById("imageInput") as HTMLInputElement;
 export const cancelButton = document.getElementById("cancelButton") as HTMLButtonElement;
-if (!nickName || !roomId) {
+if (!nickName || !roomId || !myId) {
   window.location.href = "./enterRoom.html";
 }
 const url = `https://chat.homebin.dev/rooms/${roomId}/messages`;
 
-const socketUrl = `wss://chat.homebin.dev/join/${roomId}?user=${nickName}&userInfo=true`;
+const socketUrl = `wss://chat.homebin.dev/join/${roomId}?userId=${myId}`;
 const webSocket = new WebSocket(socketUrl);
 
 export interface MessageObjectOfServer {
@@ -37,21 +37,15 @@ export interface MessageObjectOfServer {
   };
 }
 
-let myId: string | undefined;
-
 webSocket.addEventListener("message", (event) => {
   const newMessage: MessageObjectOfServer = JSON.parse(event.data);
-
-  if (newMessage.additionalInfo?.self && newMessage.type === "system") {
-    myId = newMessage.additionalInfo.joinedUserId;
-  }
-
-  renderFunc(newMessage, myId, IdOfEditedMessage);
+  renderFunc(newMessage, IdOfEditedMessage);
+  console.log(newMessage);
 });
 
 const messagesData = await fetchMessage(url);
 for (let message of messagesData) {
-  renderFunc(message, myId, IdOfEditedMessage);
+  renderFunc(message, IdOfEditedMessage);
 }
 
 imageButton.addEventListener("click", () => {

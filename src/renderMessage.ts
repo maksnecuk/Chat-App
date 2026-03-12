@@ -1,6 +1,7 @@
 import { cancelButton, messageInput, chatContainer } from "./chat";
 import type { MessageObjectOfServer } from "./chat";
-export function renderFunc(newMessage: MessageObjectOfServer, myId?: string, IdOfEditedMessage?: string) {
+export function renderFunc(newMessage: MessageObjectOfServer, IdOfEditedMessage?: string) {
+  const myId = sessionStorage.getItem("userId");
   const existingMsg = document.querySelector(`[data-message-id="${newMessage.id}"]`);
   switch (newMessage.type) {
     case "message":

@@ -3,20 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChatApp - Welcome</title>
-    <link rel="stylesheet" href="./src/style.css" />
+    <title>ChatApp - Users</title>
+    <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
     <main id="mainBackground">
-      <div id="cardBackground" class="card">
-        <h1 id="greetings">Willkommen!</h1>
-        <p class="description">Wähle eine Option</p>
+      <section class="card">
+        <h2>Dein Profil</h2>
+        <form id="createUserNicknameForm">
+          <div class="input-group">
+            <label for="userNickname">Nickname:</label>
+            <input
+              type="text"
+              id="userNickname"
+              placeholder="Gib deinen Namen ein..."
+              required
+            />
+          </div>
+          <button type="submit" class="button">Registrieren</button>
+        </form>
+        <script type="module" src="src/userRegistration.ts"></script>
+      </section>
 
-        <div class="button-group">
-          <a class="button" href="/createRoom.html">Erstellen</a>
-          <a class="button outline" href="/enterRoom.html">Betreten</a>
-        </div>
-      </div>
-    </main>
   </body>
 </html>
