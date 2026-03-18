@@ -1,7 +1,7 @@
-import { chatContainer } from "./chat";
+import { chatContainer } from "../chat";
 import { myId } from "./renderMessage";
-import type { MessageObjectOfServer } from "./chat";
-import { time } from "./time";
+import type { MessageObjectOfServer } from "../chat";
+import { time } from "../utiles/time";
 export function renderMessageTypeImage(newMessage: MessageObjectOfServer) {
   const mainContainerForImage = document.createElement("div");
   const nicknameByImageElement = document.createElement("div");

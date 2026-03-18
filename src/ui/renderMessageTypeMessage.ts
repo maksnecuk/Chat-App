@@ -1,6 +1,6 @@
-import type { MessageObjectOfServer } from "./chat";
-import { createNewMessage } from "./createNewMessage";
-import { updateExistingMessage } from "./updateExistingMessage";
+import type { MessageObjectOfServer } from "../chat";
+import { createNewMessage } from "../services/createNewMessage";
+import { updateExistingMessage } from "../services/updateExistingMessage";
 
 export let existingMsg: Element | null = null;
 

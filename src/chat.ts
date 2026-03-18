@@ -1,9 +1,9 @@
-import { fetchMessage } from "./fetchMessage.ts";
-import { renderFunc, IdOfEditedMessageSetValue, IdOfEditedMessage } from "./renderMessage.ts";
-import { editExistingMessage } from "./editExistingMessage.ts";
-import { sendNewMessage } from "./sendNewMessage.ts";
-import { sendImageMessage } from "./sendImageMessage.ts";
-import { logOut } from "./logOut.ts";
+import { fetchMessage } from "./api/fetchMessage.ts";
+import { renderFunc, IdOfEditedMessageSetValue, IdOfEditedMessage } from "./ui/renderMessage.ts";
+import { editExistingMessage } from "./services/editExistingMessage.ts";
+import { sendNewMessage } from "./services/sendNewMessage.ts";
+import { sendImageMessage } from "./services/sendImageMessage.ts";
+import { logOut } from "./services/logOut.ts";
 
 export const chatContainer = document.getElementById("chatContainer") as HTMLDivElement;
 export const messageInput = document.getElementById("message") as HTMLInputElement;

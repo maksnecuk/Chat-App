@@ -1,7 +1,7 @@
-import type { MessageObjectOfServer } from "./chat";
-import { chatContainer, cancelButton, messageInput } from "./chat";
-import { IdOfEditedMessageSetValue, myId } from "./renderMessage";
-import { time } from "./time";
+import type { MessageObjectOfServer } from "../chat";
+import { chatContainer, cancelButton, messageInput } from "../chat";
+import { IdOfEditedMessageSetValue, myId } from "../ui/renderMessage";
+import { time } from "../utiles/time";
 export function createNewMessage(newMessage: MessageObjectOfServer) {
   const mainContainer = buildBaseMessageDOM(newMessage);
   if (newMessage.user.id === myId) {

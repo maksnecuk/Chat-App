@@ -1,4 +1,4 @@
-import type { MessageObjectOfServer } from "./chat";
+import type { MessageObjectOfServer } from "../chat.ts";
 export interface messageResponse {
   messages: MessageObjectOfServer[];
 }

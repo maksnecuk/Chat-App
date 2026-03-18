@@ -1,5 +1,5 @@
-import type { Room } from "./fetchRooms";
-import { fetchRooms } from "./fetchRooms";
+import type { Room } from "../api/fetchRooms";
+import { fetchRooms } from "../api/fetchRooms";
 
 const container = document.getElementById("listRooms");
 

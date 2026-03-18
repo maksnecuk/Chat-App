@@ -1,7 +1,7 @@
 import { renderMessageTypeMessage } from "./renderMessageTypeMessage";
 import { renderMessageTypeImage } from "./renderMessageTypeImage";
 import { renderMessageTypeSystem } from "./renderMessageTypeSystem";
-import type { MessageObjectOfServer } from "./chat";
+import type { MessageObjectOfServer } from "../chat";
 
 export let IdOfEditedMessage: string | undefined = undefined;
 export function IdOfEditedMessageSetValue(IdOfEditedMessageValue: string | undefined) {

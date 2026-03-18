@@ -1,5 +1,5 @@
-import type { MessageObjectOfServer } from "./chat";
-import { chatContainer } from "./chat";
+import type { MessageObjectOfServer } from "../chat";
+import { chatContainer } from "../chat";
 export function renderMessageTypeSystem(newMessage: MessageObjectOfServer) {
   const mainContainerForSystem = document.createElement("div");
   const systemMessageElement = document.createElement("div");

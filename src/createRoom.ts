@@ -1,4 +1,4 @@
-import type { AdditionalInfo } from "./fetchRooms";
+import type { AdditionalInfo } from "./api/fetchRooms";
 
 const roomForm = document.getElementById("createRoomForm") as HTMLFormElement;
 
@@ -20,9 +20,7 @@ async function createRoom(newRoom: AdditionalInfo) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     } else {
-      alert(
-        `Raum mit der Name: ${newRoom.title} und dem Topic: ${newRoom.topic} wurde erfolgreich erstellt!`,
-      );
+      alert(`Raum mit der Name: ${newRoom.title} und dem Topic: ${newRoom.topic} wurde erfolgreich erstellt!`);
       window.location.href = "/enterRoom.html";
     }
 
