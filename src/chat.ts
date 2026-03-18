@@ -3,17 +3,19 @@ import { renderFunc, IdOfEditedMessageSetValue, IdOfEditedMessage } from "./rend
 import { editExistingMessage } from "./editExistingMessage.ts";
 import { sendNewMessage } from "./sendNewMessage.ts";
 import { sendImageMessage } from "./sendImageMessage.ts";
+import { logOut } from "./logOut.ts";
 
 export const chatContainer = document.getElementById("chatContainer") as HTMLDivElement;
 export const messageInput = document.getElementById("message") as HTMLInputElement;
 export const cancelButton = document.getElementById("cancelButton") as HTMLButtonElement;
+export const logOutButton = document.getElementById("logOutButton") as HTMLButtonElement;
 
 const messageForm = document.getElementById("messageForm") as HTMLFormElement;
 const imageButton = document.getElementById("imageButton") as HTMLButtonElement;
 const imageInput = document.getElementById("imageInput") as HTMLInputElement;
-const nickName = sessionStorage.getItem("nickname");
+const nickName = localStorage.getItem("nickname");
 const roomId = sessionStorage.getItem("roomId");
-const myId = sessionStorage.getItem("userId");
+const myId = localStorage.getItem("userId");
 
 if (!nickName || !roomId || !myId) {
   window.location.href = "./enterRoom.html";
@@ -60,6 +62,9 @@ imageInput.addEventListener("change", () => {
     sendImageMessage(file, webSocket);
     imageInput.value = "";
   }
+});
+logOutButton.addEventListener("click", () => {
+  logOut(myId!);
 });
 
 messageForm.addEventListener("submit", async (event: SubmitEvent) => {

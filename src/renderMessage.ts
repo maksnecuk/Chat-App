@@ -7,7 +7,7 @@ export let IdOfEditedMessage: string | undefined = undefined;
 export function IdOfEditedMessageSetValue(IdOfEditedMessageValue: string | undefined) {
   IdOfEditedMessage = IdOfEditedMessageValue;
 }
-export const myId: string | null = sessionStorage.getItem("userId");
+export const myId: string | null = localStorage.getItem("userId");
 export function renderFunc(newMessage: MessageObjectOfServer) {
   switch (newMessage.type) {
     case "message":

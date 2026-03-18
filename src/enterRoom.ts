@@ -7,7 +7,7 @@ roomsTable?.addEventListener("click", (event: MouseEvent) => {
   if (roomId) {
     sessionStorage.setItem("roomId", roomId);
 
-    if (sessionStorage.getItem("nickname")) {
+    if (localStorage.getItem("nickname")) {
       window.location.href = "/chat.html";
     } else {
       alert("Das Feld 'Name' soll ausgefühlt werden");

@@ -5,6 +5,9 @@ interface User {
   id?: string;
   name: string;
 }
+if (localStorage.getItem("nickname") && localStorage.getItem("userId")) {
+  window.location.href = "/roomAction.html";
+}
 
 async function createUser(newUser: User) {
   try {
@@ -37,8 +40,8 @@ userForm.addEventListener("submit", async (event: SubmitEvent) => {
   };
   const registeredUser = await createUser(newUser);
   if (registeredUser && registeredUser?.id) {
-    sessionStorage.setItem("nickname", registeredUser.name);
-    sessionStorage.setItem("userId", registeredUser.id);
+    localStorage.setItem("nickname", registeredUser.name);
+    localStorage.setItem("userId", registeredUser.id);
     alert(`Nutzer mit der Name: ${newUser.name} wurde erfolgreich registriert!`);
     window.location.href = "/roomAction.html";
   }
