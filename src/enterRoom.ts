@@ -4,8 +4,10 @@ roomsTable?.addEventListener("click", (event: MouseEvent) => {
   const clickedElement = event.target as HTMLElement;
   const row = clickedElement.closest("tr");
   const roomId = row?.dataset.roomId;
+  const roomName = row?.dataset.roomName;
   if (roomId) {
     sessionStorage.setItem("roomId", roomId);
+    sessionStorage.setItem("roomName", roomName!);
 
     if (localStorage.getItem("nickname")) {
       window.location.href = "/chat.html";

@@ -11,6 +11,10 @@ export const cancelButton = document.getElementById("cancelButton") as HTMLButto
 export const logOutButton = document.getElementById("logOutButton") as HTMLButtonElement;
 
 const messageForm = document.getElementById("messageForm") as HTMLFormElement;
+const headerNicknameDiv = document.getElementById("headerNickname") as HTMLDivElement;
+const headerRoomNameDiv = document.getElementById("headerRoomName") as HTMLDivElement;
+const headerRoomNameP = document.createElement("p");
+const headerNicknameP = document.createElement("p");
 const imageButton = document.getElementById("imageButton") as HTMLButtonElement;
 const imageInput = document.getElementById("imageInput") as HTMLInputElement;
 const nickName = localStorage.getItem("nickname");
@@ -21,6 +25,10 @@ if (!nickName || !roomId || !myId) {
   window.location.href = "./enterRoom.html";
 }
 
+headerRoomNameP.textContent = sessionStorage.getItem("roomName");
+headerNicknameP.textContent = nickName;
+headerNicknameDiv.appendChild(headerNicknameP);
+headerRoomNameDiv.appendChild(headerRoomNameP);
 const url = `https://chat.homebin.dev/rooms/${roomId}/messages`;
 const socketUrl = `wss://chat.homebin.dev/join/${roomId}?userId=${myId}`;
 const webSocket = new WebSocket(socketUrl);

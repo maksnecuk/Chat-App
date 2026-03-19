@@ -9,6 +9,7 @@ function renderRooms(rooms: Room[]): void {
   for (let room of rooms) {
     const elementRoom = document.createElement("tr");
     elementRoom.dataset.roomId = room.id.toString();
+    elementRoom.dataset.roomName = room.additionalInfo?.title?.toString();
     const titleCell = document.createElement("td");
     const topicCell = document.createElement("td");
     const onlineUserCell = document.createElement("td");
