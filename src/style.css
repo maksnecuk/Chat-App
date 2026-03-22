@@ -243,6 +243,15 @@ input[type="text"]:focus {
   color: #ededce !important;
 }
 
+.contextMenuButton {
+  background-color: #296374 !important; /* Колір, щоб відрізнялася від основної */
+  border-color: #296374 !important;
+}
+
+.contextMenuButton:hover {
+  border-color: #296374 !important;
+}
+
 .link-back {
   display: block;
   text-align: center;
@@ -255,6 +264,14 @@ input[type="text"]:focus {
 
 .link-back:hover {
   color: #296374;
+}
+.contextMenu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  gap: 4px;
+  width: fit-content;
 }
 
 .is-hidden {
@@ -358,4 +375,13 @@ tr:hover {
   text-align: right;
   margin-top: 4px;
   display: block;
+}
+
+.contextMenu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  gap: 4px;
+  width: fit-content;
 }

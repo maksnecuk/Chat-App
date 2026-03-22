@@ -1,6 +1,7 @@
 import type { MessageObjectOfServer } from "../chat";
-import { chatContainer, cancelButton, messageInput } from "../chat";
-import { IdOfEditedMessageSetValue, myId } from "../ui/renderMessage";
+import { contextMenu } from "../ui/contextMenu";
+import { chatContainer } from "../chat";
+import { myId } from "../ui/renderMessage";
 import { time } from "../utiles/time";
 export function createNewMessage(newMessage: MessageObjectOfServer) {
   const mainContainer = buildBaseMessageDOM(newMessage);
@@ -19,11 +20,7 @@ function setupMyMessage(mainContainer: HTMLDivElement, newMessage: MessageObject
 
   mainContainer.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-    cancelButton.classList.remove("is-hidden");
-
-    IdOfEditedMessageSetValue(newMessage.id);
-
-    messageInput.value = mainContainer.querySelector(`[data-role = "content"]`)!.textContent ?? "";
+    contextMenu(mainContainer, newMessage);
   });
 }
 
