@@ -377,11 +377,3 @@ tr:hover {
   display: block;
 }
 
-.contextMenu {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-  gap: 4px;
-  width: fit-content;
-}
