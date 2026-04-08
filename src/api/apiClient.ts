@@ -5,3 +5,8 @@ export async function getApi<T>(url: string): Promise<T> {
   }
   return (await response.json()) as T;
 }
+
+
+export function postApi<T>(url:string): Promise<T> {
+  const response = await fetch(url){}
+}

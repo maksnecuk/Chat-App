@@ -1,29 +1,17 @@
-const userForm = document.getElementById("createUserNicknameForm") as HTMLFormElement;
-const nicknameInput = document.getElementById("userNickname") as HTMLInputElement;
+import type { User } from './types';
+import { postApi } from './api/apiClient';
+const userForm = document.getElementById('createUserNicknameForm') as HTMLFormElement;
+const nicknameInput = document.getElementById('userNickname') as HTMLInputElement;
 
-interface User {
-  id?: string;
-  name: string;
-}
-if (localStorage.getItem("nickname") && localStorage.getItem("userId")) {
-  window.location.href = "/roomAction.html";
+if (localStorage.getItem('nickname') && localStorage.getItem('userId')) {
+  window.location.href = '/roomAction.html';
 }
 
-async function createUser(newUser: User) {
+const urlUserCreating: string = 'https://chat.homebin.dev/users';
+
+async function createUser(dataInputUser: User) {
   try {
-    const response = await fetch("https://chat.homebin.dev/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    });
-
-    const data: User = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const data = postApi<User>(urlUserCreating, dataInputUser);
     return data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -32,18 +20,20 @@ async function createUser(newUser: User) {
   }
 }
 
-userForm.addEventListener("submit", async (event: SubmitEvent) => {
+userForm.addEventListener('submit', async (event: SubmitEvent) => {
   event.preventDefault();
 
-  const newUser: User = {
+  const dataInputUser: User = {
     name: nicknameInput.value,
   };
-  const registeredUser = await createUser(newUser);
+
+  const registeredUser = await createUser(dataInputUser);
+
   if (registeredUser && registeredUser?.id) {
-    localStorage.setItem("nickname", registeredUser.name);
-    localStorage.setItem("userId", registeredUser.id);
-    alert(`Nutzer mit der Name: ${newUser.name} wurde erfolgreich registriert!`);
-    window.location.href = "/roomAction.html";
+    localStorage.setItem('nickname', registeredUser.name);
+    localStorage.setItem('userId', registeredUser.id);
+    alert(`Nutzer mit der Name: ${dataInputUser.name} wurde erfolgreich registriert!`);
+    window.location.href = '/roomAction.html';
   }
   userForm.reset();
 });

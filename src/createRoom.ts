@@ -1,29 +1,15 @@
-import type { AdditionalInfo } from "./api/fetchRooms";
+import { postApi } from './api/apiClient.ts';
+import type { AdditionalInfo } from './types.ts';
 
-const roomForm = document.getElementById("createRoomForm") as HTMLFormElement;
+const roomForm = document.getElementById('createRoomForm') as HTMLFormElement;
 
-const titleInput = document.getElementById("roomTitle") as HTMLInputElement;
-const topicInput = document.getElementById("roomTopic") as HTMLInputElement;
+const titleInput = document.getElementById('roomTitle') as HTMLInputElement;
+const topicInput = document.getElementById('roomTopic') as HTMLInputElement;
 
+const urlRoomsCreating: string = 'https://chat.homebin.dev/rooms';
 async function createRoom(newRoom: AdditionalInfo) {
   try {
-    const response = await fetch("https://chat.homebin.dev/rooms", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newRoom),
-    });
-
-    const data: AdditionalInfo = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
-      alert(`Raum mit der Name: ${newRoom.title} und dem Topic: ${newRoom.topic} wurde erfolgreich erstellt!`);
-      window.location.href = "/enterRoom.html";
-    }
-
+    const data = postApi<AdditionalInfo>(urlRoomsCreating, newRoom);
     return data;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -32,7 +18,7 @@ async function createRoom(newRoom: AdditionalInfo) {
   }
 }
 
-roomForm.addEventListener("submit", async (event: SubmitEvent) => {
+roomForm.addEventListener('submit', async (event: SubmitEvent) => {
   event.preventDefault();
 
   const newRoom: AdditionalInfo = {

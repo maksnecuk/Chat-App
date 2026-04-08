@@ -24,3 +24,8 @@ export interface Room {
   onlineUser: number;
   additionalInfo?: AdditionalInfo;
 }
+
+export interface User {
+  id?: string;
+  name: string;
+}
