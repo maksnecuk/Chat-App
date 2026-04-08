@@ -1,4 +1,5 @@
-import type { MessageObjectOfServer } from './types.ts';
+
+defaultimport type { MessageObjectOfServer } from './types.ts';
 import { fetchMessage } from './api/fetchMessage.ts';
 import {
   renderFunc,
