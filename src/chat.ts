@@ -1,4 +1,3 @@
-///dfdf
 import type { MessageObjectOfServer } from './types.ts';
 import { fetchMessage } from './api/fetchMessage.ts';
 import {
