@@ -1,25 +1,14 @@
-export interface AdditionalInfo {
-  title?: string;
-  topic?: string;
-}
+import type { Room } from '../types';
+import { getApi } from './apiClient';
 
-export interface Room {
-  id: number;
-  onlineUser: number;
-  additionalInfo?: AdditionalInfo;
-}
-
-interface roomsResponse {
+export interface roomsResponse {
   rooms: Room[];
 }
 
-export async function fetchRooms(url: string) {
+export async function fetchRooms(url: string): Promise<Room[]> {
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = (await response.json()) as unknown as roomsResponse;
+    await getApi<Room[]>(url);
+    const data = await getApi<roomsResponse>(url);
     return data.rooms;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);

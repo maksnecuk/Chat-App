@@ -1,14 +1,15 @@
-import type { MessageObjectOfServer } from "../chat.ts";
-export interface messageResponse {
+import type { MessageObjectOfServer } from '../types.ts';
+import { getApi } from './apiClient.ts';
+
+interface messageResponse {
   messages: MessageObjectOfServer[];
 }
-export async function fetchMessage(url: string) {
+
+export async function fetchMessage(
+  url: string
+): Promise<MessageObjectOfServer[]> {
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = (await response.json()) as unknown as messageResponse;
+    const data = await getApi<messageResponse>(url);
     return data.messages;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
