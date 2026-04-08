@@ -7,7 +7,6 @@ export interface roomsResponse {
 
 export async function fetchRooms(url: string): Promise<Room[]> {
   try {
-    await getApi<Room[]>(url);
     const data = await getApi<roomsResponse>(url);
     return data.rooms;
   } catch (error) {
